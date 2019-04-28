@@ -1,11 +1,5 @@
 <resources>
     <string name="app_name">PopularMoviesOne</string>
 
-    <string-array name="mock_data">
-        <item>Avengers</item>
-        <item>Star Wars</item>
-        <item>Lord of the Rings</item>
-    </string-array>
-
 
 </resources>

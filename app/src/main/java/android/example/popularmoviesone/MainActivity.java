@@ -1,15 +1,18 @@
 package android.example.popularmoviesone;
 
+import android.example.popularmoviesone.model.PopularMovieList;
+import android.example.popularmoviesone.utilities.MovieDbJsonUtils;
 import android.example.popularmoviesone.utilities.NetworkUtils;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,15 +23,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //TODO change recycler view
-        String[] movies = getResources().getStringArray(R.array.mock_data);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, movies);
-
-        // Simplification: Using a ListView instead of a RecyclerView
-        ListView listView = findViewById(R.id.recyclerview_movies);
-        listView.setAdapter(adapter);
 
         new FetchMovieTask().execute();
 
@@ -44,12 +38,36 @@ public class MainActivity extends AppCompatActivity {
                 String jsonMovieResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieRequestUrl);
 
-                Log.v(TAG, jsonMovieResponse);
 
+                PopularMovieList popularMovieList = MovieDbJsonUtils.parsePopMovieListJson(jsonMovieResponse);
+
+                String[] movieTitles = new String[Objects.requireNonNull(popularMovieList).getResults().size()];
+
+                for(int i = 0; i< popularMovieList.getResults().size(); i++){
+                    movieTitles[i] = popularMovieList.getResults().get(i).getTitle();
+
+                }
+
+                return movieTitles;
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return new String[0];
+        }
+
+        @Override
+        protected void onPostExecute(String[] titleData) {
+            if (titleData != null) {
+
+
+                //TODO change recycler view
+                final ArrayAdapter adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, titleData);
+
+                // Simplification: Using a ListView instead of a RecyclerView
+                ListView listView = findViewById(R.id.recyclerview_movies);
+                listView.setAdapter(adapter);
+
+            }
         }
     }
 
