@@ -1,11 +1,19 @@
 package android.example.popularmoviesone;
 
+import android.example.popularmoviesone.utilities.NetworkUtils;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
 
     @Override
@@ -22,6 +30,27 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.recyclerview_movies);
         listView.setAdapter(adapter);
 
+        new FetchMovieTask().execute();
+
+    }
+
+    class FetchMovieTask extends AsyncTask<String, Void, String[]>{
+
+        @Override
+        protected String[] doInBackground(String... strings) {
+            URL movieRequestUrl = NetworkUtils.buidlUrl();
+
+            try{
+                String jsonMovieResponse = NetworkUtils
+                        .getResponseFromHttpUrl(movieRequestUrl);
+
+                Log.v(TAG, jsonMovieResponse);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new String[0];
+        }
     }
 
 
