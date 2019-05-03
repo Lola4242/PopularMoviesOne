@@ -1,12 +1,13 @@
 package android.example.popularmoviesone;
 
+import android.example.popularmoviesone.model.Movie;
 import android.example.popularmoviesone.model.PopularMovieList;
 import android.example.popularmoviesone.utilities.MovieDbJsonUtils;
 import android.example.popularmoviesone.utilities.NetworkUtils;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -28,12 +29,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclesView = (RecyclerView) findViewById(R.id.recyclerview_movies);
+        mRecyclesView = findViewById(R.id.recyclerview_movies);
 
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager
+                = new GridLayoutManager(this, 3);
 
-        mRecyclesView.setLayoutManager(layoutManager);
+        mRecyclesView.setLayoutManager(gridLayoutManager);
 
         mRecyclesView.setHasFixedSize(true);
 
@@ -46,11 +47,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     @Override
-    public void onClick(String movieDetails){
-        Log.d(TAG, "onClick: "+movieDetails);
+    public void onClick(Movie movieDetails){
+        Log.d(TAG, "onClick: "+movieDetails.getTitle());
     }
 
-    class FetchMovieTask extends AsyncTask<String, Void, String[]>{
+    class FetchMovieTask extends AsyncTask<String, Void, PopularMovieList> {
 
         @Override
         protected void onPreExecute(){
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected String[] doInBackground(String... strings) {
+        protected PopularMovieList doInBackground(String... strings) {
             URL movieRequestUrl = NetworkUtils.buidlUrl();
 
             try{
@@ -76,15 +77,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 }
                 Log.d(TAG, jsonMovieResponse);
 
-                return movieTitles;
+                return popularMovieList;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return new String[0];
+            return null;
         }
 
         @Override
-        protected void onPostExecute(String[] titleData) {
+        protected void onPostExecute(PopularMovieList titleData) {
             if (titleData != null) {
                 mMovieAdapter.setMovieDataa(titleData);
 

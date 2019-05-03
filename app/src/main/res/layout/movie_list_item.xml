@@ -4,20 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!--This TextView holds the weather data for one particular day in the forecast-->
-    <TextView
-        android:id="@+id/tv_movie_data"
-        style="@style/TextAppearance.AppCompat.Large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"/>
-
-    <!--This View serves as a visual divider between list items-->
-    <View
+    <ImageView
+        android:id="@+id/image_iv"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#dadada"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop" />
 
 </LinearLayout>
