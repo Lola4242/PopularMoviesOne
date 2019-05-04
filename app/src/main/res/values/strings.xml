@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">PopularMoviesOne</string>
+    <string name="detail_error_message">Movie details not available</string>
+    <string name="title">Title</string>
+    <string name="_25_04_1993">25-04-1993</string>
+    <string name="_6_10">6 / 10</string>
+    <string name="description">description</string>
 
 
 </resources>

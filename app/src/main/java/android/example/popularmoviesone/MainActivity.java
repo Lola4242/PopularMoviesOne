@@ -1,5 +1,7 @@
 package android.example.popularmoviesone;
 
+import android.content.Context;
+import android.content.Intent;
 import android.example.popularmoviesone.model.Movie;
 import android.example.popularmoviesone.model.PopularMovieList;
 import android.example.popularmoviesone.utilities.MovieDbJsonUtils;
@@ -14,6 +16,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+
+import static android.example.popularmoviesone.DetailActivity.EXTRA_MOVIE;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
@@ -47,8 +51,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     @Override
-    public void onClick(Movie movieDetails){
-        Log.d(TAG, "onClick: "+movieDetails.getTitle());
+    public void onClick(Movie movie){
+        Context context = this;
+        Class destinationClass = DetailActivity.class;
+        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        intentToStartDetailActivity.putExtra(EXTRA_MOVIE, movie );
+        startActivity(intentToStartDetailActivity);
     }
 
     class FetchMovieTask extends AsyncTask<String, Void, PopularMovieList> {
