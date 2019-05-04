@@ -5,10 +5,28 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:background="@android:color/black">
+    
+    <TextView
+        android:id="@+id/tv_error_message_display"
+        android:padding="16dp"
+        android:text="@string/error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:textSize="22sp"
+        android:textColor="@android:color/white"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    
+    <ProgressBar
+       android:id="@+id/pb_loading_inidcator"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:progressTint="@android:color/white"/>
 
 </FrameLayout>

@@ -28,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE= "extra_movie";
 
-    public static final String URL = "https://image.tmdb.org/t/p/w185/";
+    public static final String URL = "https://image.tmdb.org/t/p/w500/";
     public static final String GIVEN_DATE = "yyyy-MM-dd";
     public static final String NICE_DATE = "dd MMM yyyy";
     public static final String RATING = " / 10";

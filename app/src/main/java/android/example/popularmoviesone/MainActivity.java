@@ -14,7 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private RecyclerView mRecyclesView;
     private MovieAdapter mMovieAdapter;
 
+    TextView mErrorMessageTextView;
+    ProgressBar mLoadingIndicator;
+
     private static final String MOVIE_DB_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIE_DB_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
 
@@ -41,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         setContentView(R.layout.activity_main);
 
         mRecyclesView = findViewById(R.id.recyclerview_movies);
+        mErrorMessageTextView = findViewById(R.id.tv_error_message_display);
+        mLoadingIndicator = findViewById(R.id.pb_loading_inidcator);
 
         GridLayoutManager gridLayoutManager
                 = new GridLayoutManager(this, 3);
@@ -55,6 +63,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         new FetchMovieTask().execute(MOVIE_DB_URL_POPULAR);
 
+    }
+
+    private void showMovieData(){
+        mErrorMessageTextView.setVisibility(View.INVISIBLE);
+        mRecyclesView.setVisibility(View.VISIBLE);
+    }
+
+    private void showErrorMessage(){
+        mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mRecyclesView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -98,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -128,9 +147,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         @Override
         protected void onPostExecute(PopularMovieList titleData) {
-            if (titleData != null) {
-                mMovieAdapter.setMovieDataa(titleData);
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
 
+            if (titleData != null && !titleData.equals(" ")) {
+                showMovieData();
+                mMovieAdapter.setMovieDataa(titleData);
+            } else {
+                showErrorMessage();
             }
         }
     }
