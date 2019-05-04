@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.PopupMenu;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,12 +23,16 @@ import java.util.Objects;
 import static android.example.popularmoviesone.DetailActivity.EXTRA_MOVIE;
 
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, PopupMenu.OnMenuItemClickListener  {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView mRecyclesView;
     private MovieAdapter mMovieAdapter;
+
+    private static final String MOVIE_DB_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
+    private static final String MOVIE_DB_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
+
 
 
     @Override
@@ -46,8 +53,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclesView.setAdapter(mMovieAdapter);
 
-        new FetchMovieTask().execute();
+        new FetchMovieTask().execute(MOVIE_DB_URL_POPULAR);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemThatWasClickedId = item.getItemId();
+
+        switch (itemThatWasClickedId){
+            case R.id.popularity:
+                new FetchMovieTask().execute(MOVIE_DB_URL_POPULAR);
+                return true;
+            case R.id.topRated:
+                new FetchMovieTask().execute(MOVIE_DB_URL_TOP_RATED);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -59,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intentToStartDetailActivity);
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return false;
+    }
+
     class FetchMovieTask extends AsyncTask<String, Void, PopularMovieList> {
 
         @Override
@@ -67,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected PopularMovieList doInBackground(String... strings) {
-            URL movieRequestUrl = NetworkUtils.buidlUrl();
+        protected PopularMovieList doInBackground(String... urls) {
+            URL movieRequestUrl = NetworkUtils.buidlUrl(urls[0]);
 
             try{
                 String jsonMovieResponse = NetworkUtils

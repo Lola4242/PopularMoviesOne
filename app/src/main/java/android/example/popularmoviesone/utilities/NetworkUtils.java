@@ -19,8 +19,6 @@ public class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String MOVIE_DB_URL = "https://api.themoviedb.org/3/movie/popular";
-
     /* Pass a ISO 639-1 value to display translated data for the fields that support it.*/
     private static final String language = "en-US";
     /* Specify which page to query. */
@@ -37,9 +35,9 @@ public class NetworkUtils {
      *
      * @return The URL to use to query the weather server.
      */
-    public static URL buidlUrl(){
+    public static URL buidlUrl(String movieUrl){
 
-        Uri buildUri = Uri.parse(MOVIE_DB_URL).buildUpon()
+        Uri buildUri = Uri.parse(movieUrl).buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .appendQueryParameter(LANGUAGE_PARAM, language)
                 .appendQueryParameter(PAGE_PARAM, firstPage)

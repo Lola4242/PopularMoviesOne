@@ -5,6 +5,9 @@
     <string name="_25_04_1993">25-04-1993</string>
     <string name="_6_10">6 / 10</string>
     <string name="description">description</string>
+    <string name="sort">Sort</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popularity">Popularity</string>
 
 
 </resources>
