@@ -51,14 +51,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
      *                  for more details.
      * @return A new ForecastAdapterViewHolder that holds the View for each list item
      */
+    @NonNull
     @Override
-    public MovieAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public MovieAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.movie_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         return new MovieAdapterViewHolder(view);
     }
 
@@ -107,9 +107,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
      */
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public final ImageView mMovieImageView;
+        final ImageView mMovieImageView;
 
-        public MovieAdapterViewHolder(@NonNull View itemView) {
+        MovieAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             mMovieImageView = itemView.findViewById(R.id.image_iv);
             itemView.setOnClickListener(this);

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,20 +20,17 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 
 import static android.example.popularmoviesone.DetailActivity.EXTRA_MOVIE;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, PopupMenu.OnMenuItemClickListener  {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     private RecyclerView mRecyclesView;
     private MovieAdapter mMovieAdapter;
 
-    TextView mErrorMessageTextView;
-    ProgressBar mLoadingIndicator;
+    private TextView mErrorMessageTextView;
+    private ProgressBar mLoadingIndicator;
 
     private static final String MOVIE_DB_URL_POPULAR = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIE_DB_URL_TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated";
@@ -128,17 +124,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                         .getResponseFromHttpUrl(movieRequestUrl);
 
 
-                PopularMovieList popularMovieList = MovieDbJsonUtils.parsePopMovieListJson(jsonMovieResponse);
 
-                String[] movieTitles = new String[Objects.requireNonNull(popularMovieList).getResults().size()];
-
-                for(int i = 0; i< popularMovieList.getResults().size(); i++){
-                    movieTitles[i] = popularMovieList.getResults().get(i).getTitle();
-
-                }
-                Log.d(TAG, jsonMovieResponse);
-
-                return popularMovieList;
+                return MovieDbJsonUtils.parsePopMovieListJson(jsonMovieResponse);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -149,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         protected void onPostExecute(PopularMovieList titleData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
 
-            if (titleData != null && !titleData.equals(" ")) {
+            if (titleData != null) {
                 showMovieData();
                 mMovieAdapter.setMovieDataa(titleData);
             } else {

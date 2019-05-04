@@ -20,7 +20,6 @@ public class MovieDbJsonUtils {
      *
      * @param json JSON string
      * @return Movie object describing a movie
-     * @throws JSONException If JSON data cannot be properly parsed
      */
 
     public static PopularMovieList parsePopMovieListJson(String json){

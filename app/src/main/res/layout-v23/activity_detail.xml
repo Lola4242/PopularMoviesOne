@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/iv_back_drop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:fitsSystemWindows="true"
             android:scaleType="centerCrop"
             android:contentDescription="@string/movie_picture" />
@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/_25_04_1993"
-                    android:paddingStart="@dimen/padding_text"
+                    android:paddingStart="10dp"
                     android:paddingEnd="@dimen/padding_text"
                     android:textColor="@android:color/darker_gray" />
 
@@ -55,6 +55,7 @@
                     android:padding="@dimen/padding_text"
                     android:gravity="center"
                     android:drawableTop="@android:drawable/btn_star"
+                    android:drawableTint="@android:color/holo_orange_light"
                     android:text="@string/_6_10"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"/>

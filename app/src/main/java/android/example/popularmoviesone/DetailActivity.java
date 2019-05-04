@@ -14,24 +14,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class DetailActivity extends AppCompatActivity {
 
-    Movie movie;
+    private Movie movie;
 
-    ImageView iMovieBackDrop;
+    private ImageView iMovieBackDrop;
 
-    TextView tMovieTitle;
-    TextView tMovieDetails;
-    TextView tMovieReleaseDate;
-    TextView tMovieVoteAverage;
+    private TextView tMovieTitle;
+    private TextView tMovieDetails;
+    private TextView tMovieReleaseDate;
+    private TextView tMovieVoteAverage;
 
     public static final String EXTRA_MOVIE= "extra_movie";
 
-    public static final String URL = "https://image.tmdb.org/t/p/w500/";
-    public static final String GIVEN_DATE = "yyyy-MM-dd";
-    public static final String NICE_DATE = "dd MMM yyyy";
-    public static final String RATING = " / 10";
+    private static final String URL = "https://image.tmdb.org/t/p/w500/";
+    private static final String GIVEN_DATE = "yyyy-MM-dd";
+    private static final String NICE_DATE = "dd MMM yyyy";
+    private static final String RATING = " / 10";
 
 
     @Override
@@ -50,13 +51,13 @@ public class DetailActivity extends AppCompatActivity {
             closeOnError();
         }
 
-        if(!intent.hasExtra(EXTRA_MOVIE)){
+        if(!Objects.requireNonNull(intent).hasExtra(EXTRA_MOVIE)){
             closeOnError();
             return;
 
         }
 
-        movie = intent.getExtras().getParcelable(EXTRA_MOVIE);
+        movie = Objects.requireNonNull(intent.getExtras()).getParcelable(EXTRA_MOVIE);
 
         if(movie == null){
             closeOnError();
@@ -84,7 +85,8 @@ public class DetailActivity extends AppCompatActivity {
 
 
         tMovieReleaseDate.setText(releaseDateText);
-        tMovieVoteAverage.setText(movie.getVoteAverage() + RATING);
+        String voteAgarage = movie.getVoteAverage() + RATING;
+        tMovieVoteAverage.setText(voteAgarage);
     }
 
     private void closeOnError() {

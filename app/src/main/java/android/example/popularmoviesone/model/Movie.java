@@ -8,20 +8,20 @@ import java.util.List;
 
 public class Movie implements Parcelable {
 
-    private String posterPath;
-    private boolean adult;
-    private String overview;
-    private String releaseDate;
-    private List<Integer> genreIds;
-    private int id;
-    private String originalTitle;
-    private String originalLanguage;
-    private String title;
-    private String backdropPath;
-    private long popularity;
-    private int voteCount;
-    private boolean video;
-    private long voteAverage;
+    private final String posterPath;
+    private final boolean adult;
+    private final String overview;
+    private final String releaseDate;
+    private final List<Integer> genreIds;
+    private final int id;
+    private final String originalTitle;
+    private final String originalLanguage;
+    private final String title;
+    private final String backdropPath;
+    private final long popularity;
+    private final int voteCount;
+    private final boolean video;
+    private final long voteAverage;
 
     public Movie(String posterPath, boolean adult, String overview, String releaseDate,
                  List<Integer> genreIds, int id, String originalTitle, String originalLanguage,
@@ -66,112 +66,24 @@ public class Movie implements Parcelable {
         return posterPath;
     }
 
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
-    }
-
-    public boolean isAdult() {
-        return adult;
-    }
-
-    public void setAdult(boolean adult) {
-        this.adult = adult;
-    }
-
     public String getOverview() {
         return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
     }
 
     public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public List<Integer> getGenreIds() {
-        return genreIds;
-    }
-
-    public void setGenreIds(List<Integer> genreIds) {
-        this.genreIds = genreIds;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getBackdropPath() {
         return backdropPath;
     }
 
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
-    }
-
-    public long getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(long popularity) {
-        this.popularity = popularity;
-    }
-
-    public int getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
-    }
-
-    public boolean isVideo() {
-        return video;
-    }
-
-    public void setVideo(boolean video) {
-        this.video = video;
-    }
-
     public long getVoteAverage() {
         return voteAverage;
-    }
-
-    public void setVoteAverage(long voteAverage) {
-        this.voteAverage = voteAverage;
     }
 
     @Override
