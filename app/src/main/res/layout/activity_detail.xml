@@ -67,8 +67,6 @@
                     android:text="@string/description"
                     android:textColor="@android:color/darker_gray" />
 
-
-
             </LinearLayout>
 
 

@@ -3,6 +3,8 @@ package android.example.popularmoviesone.utilities;
 
 import android.example.popularmoviesone.model.Movie;
 import android.example.popularmoviesone.model.PopularMovieList;
+import android.example.popularmoviesone.model.Review;
+import android.example.popularmoviesone.model.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +15,38 @@ import java.util.List;
 
 
 public class MovieDbJsonUtils {
+
+    public static List<Trailer> parseTrailerListJson(String json){
+
+        final String RESULT = "results";
+        final String KEY = "key";
+
+
+
+        try {
+
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray resultsJson = jsonObject.getJSONArray(RESULT);
+
+
+            List<Trailer> trailers = new ArrayList<>();
+
+
+            for (int i = 0; i < resultsJson.length(); i++) {
+                JSONObject trailer = resultsJson.getJSONObject(i);
+
+                String key = trailer.getString(KEY);
+                trailers.add(new Trailer(key));
+            }
+
+            return trailers;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     /**
      * This method parses JSON and returns an Movie Object
@@ -91,4 +125,39 @@ public class MovieDbJsonUtils {
 
     }
 
+    public static Review[] parseReviewListJson(String json) {
+
+        final String ID = "id";
+        final String RESULTS = "results";
+        final String ID_RESULT = "id";
+        final String AUTHOR = "author";
+        final String CONTENT = "content";
+        final String URL = "url";
+
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(json);
+            int id = jsonObject.getInt(ID);
+
+            JSONArray resultsJson = jsonObject.getJSONArray(RESULTS);
+
+            Review[] reviews = new Review[resultsJson.length()];
+
+            for(int i = 0; i< resultsJson.length(); i++) {
+                JSONObject movie = resultsJson.getJSONObject(i);
+
+                String idResult = movie.getString(ID_RESULT);
+                String author = movie.getString(AUTHOR);
+                String content = movie.getString(CONTENT);
+                String url = movie.getString(URL);
+                reviews[i] = new Review(idResult, author, content, url);
+            }
+            return reviews;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  null;
+
+    }
 }

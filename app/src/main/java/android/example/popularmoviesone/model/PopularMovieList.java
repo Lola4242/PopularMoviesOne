@@ -16,6 +16,13 @@ public class PopularMovieList {
         this.totalPages = totalPages;
     }
 
+    public PopularMovieList(List<Movie> results){
+        this.page = 0;
+        this.results = results;
+        this.totalResults = 0;
+        this.totalPages = 0;
+    }
+
     public List<Movie> getResults() {
         return results;
     }

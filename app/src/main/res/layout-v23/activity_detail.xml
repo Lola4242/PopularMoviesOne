@@ -68,7 +68,38 @@
                     android:text="@string/description"
                     android:textColor="@android:color/darker_gray" />
 
+                <GridView
+                    android:id="@+id/trailers_gridview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:columnWidth="60dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="10dp"
+                    android:numColumns="auto_fit"
+                    android:padding="10dp"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"></GridView>
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tv_error_message_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/error_message"
+                    android:textSize="20sp"
+                    android:visibility="invisible" />
+
+                <ProgressBar
+                    android:id="@+id/pb_loading_indicator"
+                    android:layout_height="42dp"
+                    android:layout_width="42dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

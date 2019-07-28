@@ -11,6 +11,9 @@
     <string name="popularity">Popularity</string>
     <string name="movieposter">MoviePoster</string>
     <string name="movie_picture">Movie Picture</string>
+    <string name="view_trailer">View Trailer</string>
+    <string name="trailer">Trailer</string>
+    <string name="favorite">Favorite</string>
 
 
 </resources>

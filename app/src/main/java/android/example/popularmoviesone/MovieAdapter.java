@@ -1,16 +1,24 @@
 package android.example.popularmoviesone;
 
 import android.content.Context;
+import android.example.popularmoviesone.database.AppDatabase;
+import android.example.popularmoviesone.database.MovieEntry;
 import android.example.popularmoviesone.model.Movie;
 import android.example.popularmoviesone.model.PopularMovieList;
+import android.example.popularmoviesone.utilities.MapperUtils;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+
+import static android.content.ContentValues.TAG;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
@@ -21,6 +29,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
      * our RecyclerView
      */
     private final MovieAdapterOnClickHandler mClickHandler;
+
+    private AppDatabase mDb;
+
+
 
     /**
      * The interface that receives onClick messages.
@@ -59,6 +71,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
+
+        mDb = AppDatabase.getInstance(context);
+
         return new MovieAdapterViewHolder(view);
     }
 
@@ -73,11 +88,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
      * @param position                  The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull MovieAdapterViewHolder movieAdapterViewHolder, int position) {
+    public void onBindViewHolder(@NonNull final MovieAdapterViewHolder movieAdapterViewHolder, int position) {
 
-        Movie movieDetails = mMovieData.getResults().get(position);
+        final Movie movieDetails = mMovieData.getResults().get(position);
 
         Picasso.get().load("https://image.tmdb.org/t/p/w500/" + movieDetails.getPosterPath()).into(movieAdapterViewHolder.mMovieImageView);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                MovieEntry movieEntry = mDb.movieDao().loadMovieById(movieDetails.getId());
+                movieAdapterViewHolder.mStarButton.setChecked(movieEntry!=null);
+
+            }
+        });
+
 
 
     }
@@ -108,12 +133,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final ImageView mMovieImageView;
+        final CheckBox mStarButton;
 
         MovieAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             mMovieImageView = itemView.findViewById(R.id.image_iv);
-            itemView.setOnClickListener(this);
+            mStarButton = itemView.findViewById(R.id.star_bt);
+            mMovieImageView.setOnClickListener(this);
+            mStarButton.setOnClickListener(this);
+
         }
+
 
 
 
@@ -125,8 +155,27 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            Movie movieDetails = mMovieData.getResults().get(adapterPosition);
-            mClickHandler.onClick(movieDetails);
+            final Movie movieDetails = mMovieData.getResults().get(adapterPosition);
+
+            switch (v.getId()) {
+                case R.id.image_iv:
+                    mClickHandler.onClick(movieDetails);
+                    break;
+                case R.id.star_bt:
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mStarButton.isChecked()) {
+                                // insert new movie to favorites
+                                mDb.movieDao().insertMovie(MapperUtils.MovieToMovieEntry(movieDetails));
+                            } else {
+                                // delete movie from favorites
+                                mDb.movieDao().deleteMovie(MapperUtils.MovieToMovieEntry(movieDetails));
+                            }
+                        }
+                    });
+                    break;
+            }
 
         }
     }
